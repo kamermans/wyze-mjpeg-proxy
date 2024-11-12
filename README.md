@@ -34,7 +34,7 @@ In this example, there are two 3D printers being monitored, a ZeroG Mercury One 
 exposes an RTSP stream at port `8554`.  You can get the `source` URL from the docker-wyze-bridge
 GUI like this:
 
-[![docker-wyze-bridge](images/getting-rtsp-stream.png)]
+![docker-wyze-bridge](images/getting-rtsp-stream.png)
 
 Here is the complete list of options:
 - `verbosity`: `0`: off, `1`: verbose, `2`: very verbose
@@ -60,6 +60,6 @@ http://<host_ip>:<port>/<name>/image.jpg
 # Fluidd / Mainsail / Mobileraker Configuration
 For Mobileraker to pick up on these video streams, they must be configured in Fluidd or Mainsail first.  Use the URLs above and configure your GUI like this:
 
-[![fluidd camera configuration](images/fluidd_config.png)]
+![fluidd camera configuration](images/fluidd_config.png)
 
 Now, in Mobileraker, you can select this camera and it will show snapshots and live video in the app.
