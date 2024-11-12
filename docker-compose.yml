@@ -1,0 +1,8 @@
+services:
+  wyze-mjpeg-proxy:
+    image: "kamermans/wyze-mjpeg-proxy:latest"
+    container_name: wyze-mjpeg-proxy
+    ports:
+      - "8190:8190"
+    volumes:
+      - ./config.yaml:/config.yaml:ro

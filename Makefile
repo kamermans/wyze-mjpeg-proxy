@@ -1,16 +1,18 @@
+.PHONY: build
 build:
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o wyze-mjpeg-proxy ./cmd/wyze-mjpeg-proxy
+	rm -rf ./build/*
+	mkdir -p ./build/amd64 ./build/arm64
 
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
+		-o build/amd64/wyze-mjpeg-proxy \
+		./cmd/wyze-mjpeg-proxy
+
+	CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build \
+		-o build/arm64/wyze-mjpeg-proxy \
+		./cmd/wyze-mjpeg-proxy
+
+.PHONY: docker
 docker: build
-	docker build -t wyze-mjpeg-proxy .
-
-start:
-	docker rm -vf wyze-mjpeg-proxy || echo "No container to remove"
-	docker run -d \
-		--name wyze-mjpeg-proxy \
-		-p 8190:8190 \
-		-v $(PWD)/config.yaml:/config.yaml \
-		wyze-mjpeg-proxy
-
-stop:
-	docker stop wyze-mjpeg-proxy
+	docker buildx build --pull --push \
+		--platform linux/amd64,linux/arm64 \
+		-t kamermans/wyze-mjpeg-proxy .
