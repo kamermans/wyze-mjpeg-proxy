@@ -1,0 +1,13 @@
+verbosity: 0
+port: 8190
+streams:
+  - name: mercury-1
+    source: rtsp://192.168.4.66:8554/mercury-1-camera
+    resolution: 1920x1090
+    quality: 80
+    framerate: 5
+  - name: voron-0
+    source: rtsp://192.168.4.66:8554/voron-0-cam
+    resolution: 1920x1090
+    quality: 80
+    framerate: 5
