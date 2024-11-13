@@ -1,5 +1,7 @@
 # wyze-mjpeg-proxy
 
+[![Docker Image](https://img.shields.io/docker/v/kamermans/wyze-mjpeg-proxy)](https://hub.docker.com/r/kamermans/wyze-mjpeg-proxy)
+
 A service providing a MJPEG stream from an RTSP stream.
 
 This was created to take RTSP streams from the [docker-wyze-bridge](https://github.com/mrlt8/docker-wyze-bridge) project and expose them as MJPEG streams so [Mobileraker](https://github.com/Clon1998/mobileraker) can use them:
@@ -48,7 +50,58 @@ Here is the complete list of options:
     - `quality`: The quality of the output video on a scale from `1` (lowest quality) to `100` (highest quality)
     - `framerate`: The output framerate.  Clients will be forced to adhere to this framerate to keep CPU usage down.
 
+# Usage
+
+Once you have a configuration saved as `config.yaml`, you can start the docker container:
+```
+docker compose up
+```
+
+> `wyze-mjpeg-proxy` is available for Intel and ARM64 CPUs on Linux.
+
+If everything started correctly, you should not see any errors:
+```
+$ docker compose up
+[+] Running 1/0
+ ✔ Container wyze-mjpeg-proxy  Created                                                                                                                                      0.0s
+Attaching to wyze-mjpeg-proxy
+wyze-mjpeg-proxy  | Loading config from /config.yaml
+wyze-mjpeg-proxy  | Listening on :8190
+wyze-mjpeg-proxy  | Setting up stream: mercury-1
+wyze-mjpeg-proxy  | Setting up stream: voron-0
+wyze-mjpeg-proxy  | Started mercury-1 stream
+wyze-mjpeg-proxy  | Started voron-0 stream
+```
+
+If `wyze-mjpeg-proxy` is unable to connect to an RTSP stream, it will print an error and
+retry that stream every 10 seconds:
+```
+$ docker compose up
+[+] Running 1/0
+ ✔ Container wyze-mjpeg-proxy  Created                                                                                                                                      0.0s
+Attaching to wyze-mjpeg-proxy
+wyze-mjpeg-proxy  | Loading config from /config.yaml
+wyze-mjpeg-proxy  | Listening on :8190
+wyze-mjpeg-proxy  | Setting up stream: mercury-1
+wyze-mjpeg-proxy  | Setting up stream: voron-0
+wyze-mjpeg-proxy  | Started mercury-1 stream
+wyze-mjpeg-proxy  | Started voron-0 stream
+wyze-mjpeg-proxy  | Failed to read next part: multipart: NextPart: EOF
+wyze-mjpeg-proxy  | Failed to wait for ffmpeg for mercury-1: exit status 251
+wyze-mjpeg-proxy  | ffmpeg exited, stopping mercury-1 stream
+wyze-mjpeg-proxy  | Restarting mercury-1 stream in 10s seconds
+wyze-mjpeg-proxy  | Started mercury-1 stream
+wyze-mjpeg-proxy  | Failed to read next part: multipart: NextPart: EOF
+wyze-mjpeg-proxy  | Failed to wait for ffmpeg for mercury-1: exit status 251
+wyze-mjpeg-proxy  | ffmpeg exited, stopping mercury-1 stream
+wyze-mjpeg-proxy  | Restarting mercury-1 stream in 10s seconds
+```
+
+If the proxy starts and at some point the camera stream goes offline (like when the camera
+is updated and restarts), it will also continue retying the connection every 10 seconds.
+
 # Output
+
 The video an images are available on the host with a URL like this:
 
 ```
