@@ -4,7 +4,7 @@ A service providing a MJPEG stream from an RTSP stream.
 
 This was created to take RTSP streams from the [docker-wyze-bridge](https://github.com/mrlt8/docker-wyze-bridge) project and expose them as MJPEG streams so [Mobileraker](https://github.com/Clon1998/mobileraker) can use them:
 
-<img src="images/mobileraker.png" alt="Mobileraker with Wyze Pan Cam v3" style="max-width: 300px"/>
+<img src="images/mobileraker.png" alt="Mobileraker with Wyze Pan Cam v3" width="300"/>
 
 I created this because `docker-wyze-bridge` is not able to output any streams that work well with `Mobileraker`, and all other options are needlessly complex and/or deprecated like `ffserver`.
 
